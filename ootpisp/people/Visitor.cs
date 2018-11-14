@@ -17,6 +17,9 @@ namespace ootpisp
             {
                 var sum = decimal.Zero;
                 var amountOfElements = VisitedPerformances.Count;
+
+                if (amountOfElements == 0) return 0;
+                
                 foreach (var performance in VisitedPerformances)
                 {
                     sum += performance.Price;

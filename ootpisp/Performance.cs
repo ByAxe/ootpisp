@@ -7,6 +7,7 @@ namespace ootpisp
         public string Title { get; set; }
         public System.DateTime DateTime { get; set; }
         public decimal Price { get; set; }
+        public Frequency Frequency { get; set; } = Frequency.Yearly;
 
         public override string ToString()
         {
