@@ -12,52 +12,56 @@ namespace ootpisp
             // -----------------------------------------------------------------
             // ----------------------------LAB 1,2--------------------------------
             // -----------------------------------------------------------------
-            Console.WriteLine($"\nLab1");
-            
-            var greatestShow = new Performance {
+            Console.WriteLine("\nLab1");
+
+            var greatestShow = new Performance
+            {
                 DateTime = DateTime.Now.AddMonths(1),
                 Id = 0,
-                Price = new decimal(18.92) ,
+                Price = new decimal(18.92),
                 Title = "Greatest Show"
             };
-            
-            var education = new Education{Title = "Software Engineer"};
-            var person = new Person{Age = 25, Gender = Gender.Male, Name = "Alex"};
-            
-            var visitor = new Visitor{Age = 25, Gender = Gender.Male, Name = "Alex", 
-                Id = 1, UpcomingPerformances = {greatestShow}, Education = education};
-            
+
+            var education = new Education {Title = "Software Engineer"};
+            var person = new Person {Age = 25, Gender = Gender.Male, Name = "Alex"};
+
+            var visitor = new Visitor
+            {
+                Age = 25, Gender = Gender.Male, Name = "Alex",
+                Id = 1, UpcomingPerformances = {greatestShow}, Education = education
+            };
+
             Console.WriteLine($"\t{visitor.ToShortString()}");
 
             // --------------------
-            Console.WriteLine($"\nAll possible frequencies");
+            Console.WriteLine("\nAll possible frequencies");
 
             var values = EnumUtil.GetValues<Frequency>();
-            foreach (var frequency in values)
-            {
-                Console.WriteLine($"\t-> {frequency}");
-            }
-            
+            foreach (var frequency in values) Console.WriteLine($"\t-> {frequency}");
+
             // --------------------
-            var jimmyFallon = new Performance {
+            var jimmyFallon = new Performance
+            {
                 DateTime = new DateTime(2017, 1, 24),
                 Id = 1,
-                Price = new decimal(76.22) ,
+                Price = new decimal(76.22),
                 Title = "Jimmy Fallon is late!"
             };
-            var duSoliel = new Performance {
+            var duSoliel = new Performance
+            {
                 DateTime = new DateTime(2018, 3, 28),
                 Id = 2,
-                Price = new decimal(99.9) ,
+                Price = new decimal(99.9),
                 Title = "Du Soleil"
             };
-            var duSoliel2 = new Performance {
+            var duSoliel2 = new Performance
+            {
                 DateTime = new DateTime(2018, 7, 11),
                 Id = 3,
-                Price = new decimal(199.9) ,
+                Price = new decimal(199.9),
                 Title = "Du Soleil 2.0"
             };
-            
+
             visitor.AddVisitedPerformance(jimmyFallon);
             visitor.AddVisitedPerformance(duSoliel);
             visitor.AddVisitedPerformance(duSoliel2);
@@ -68,25 +72,25 @@ namespace ootpisp
             // -----------------------------------------------------------------
             // ----------------------------LAB 2--------------------------------
             // -----------------------------------------------------------------
-            Console.WriteLine($"\n\n\nLab2");
+            Console.WriteLine("\n\n\nLab2");
 
             var visitorCopy = visitor.DeepCopy() as Visitor;
             Debug.Assert(visitorCopy != null, nameof(visitorCopy) + " != null");
-            
+
             visitorCopy.Id = visitor.Id;
             var equal = visitor.Equals(visitorCopy) ? "Yes" : "No";
-            
+
             Console.WriteLine($"\nVisitor: \n\t{visitor.ToShortString()}");
             Console.WriteLine($"\nVisitor copy: \n\t{visitorCopy.ToShortString()}");
             Console.WriteLine($"\nAre the equal? {equal}.");
 
 
-            Console.WriteLine($"\nNow we are going to change first Visitor. Watch.");
+            Console.WriteLine("\nNow we are going to change first Visitor. Watch.");
             visitor.Id = 2;
             visitor.Name = "James";
             visitor.Age = 58;
             visitor.VisitedPerformances = new List<Performance>();
-            
+
             Console.WriteLine($"\nVisitor: \n\t{visitor.ToShortString()}");
             Console.WriteLine($"\nVisitor copy: \n\t{visitorCopy.ToShortString()}");
 
@@ -104,11 +108,41 @@ namespace ootpisp
             const decimal borderPrice = 3;
             Console.WriteLine($"\nLet's print all performances with price higher than {borderPrice}...");
             foreach (var performance in visitorCopy.GetNextPerformancePricierThan(borderPrice))
-            {
-                Console.WriteLine($"\t{performance}");   
-            }
+                Console.WriteLine($"\t{performance}");
+
+            // -----------------------------------------------------------------
+            // ----------------------------LAB 3--------------------------------
+            // -----------------------------------------------------------------
+            Console.WriteLine("\n\n\nLab3");
+
+            var visitorCollection = new VisitorCollection();
+            visitorCollection.AddDefaults();
+
+            Console.WriteLine("\nLet\'s try to print visitors collection in a short manner...");
+            Console.WriteLine(visitorCollection.ToShortString());
+
+            Console.WriteLine("\nLet\'s try to print visitors collection in a long manner...");
+            Console.WriteLine(visitorCollection.ToString());
+            
+            Console.WriteLine("\nLet\'s sort collection via Date");
+            visitorCollection.SortCollectionViaDate();
+            Console.WriteLine(visitorCollection.ToShortString());
 
             
+            Console.WriteLine("\nLet\'s sort collection via Name");
+            visitorCollection.SortCollectionViaName();
+            Console.WriteLine(visitorCollection.ToShortString());
+            
+            Console.WriteLine("\nLet\'s sort collection via Average Price");
+            visitorCollection.SortCollectionViaAveragePrice();
+            Console.WriteLine(visitorCollection.ToShortString());
+
+            Console.WriteLine($"\nMaximum mark for all the elements of generated collection is...  {visitorCollection.MaxMarkGroup}");
+
+            Console.WriteLine($"\nHere are all the specialists:\n{visitorCollection.VisitorsSpecialistsToString()}");
+            
+            
+            Console.WriteLine($"\nHere all the visitors with average mark higher than 20\n{visitorCollection.GroupsWithAverageMarkGroup(20)}");
         }
     }
 }
