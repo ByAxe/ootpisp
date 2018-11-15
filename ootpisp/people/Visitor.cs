@@ -1,16 +1,19 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using ootpisp.tests;
 
 namespace ootpisp
 {
-    public class Visitor
+    public class Visitor : Person, IDateAndCopy
     {
         private readonly decimal _averagePrice;
         public long Id { get; set; } = 0;
-        public Person Person { get; set; } = new Person();
         public Education Education { get; set; } = new Education();
         public List<Performance> UpcomingPerformances { set; get; } = new List<Performance>();
         public List<Performance> VisitedPerformances { set; get; } = new List<Performance>();
+        public List<Mark> Marks { get; set; } = new List<Mark>();
         
         public decimal AveragePrice {
             get
@@ -43,10 +46,50 @@ namespace ootpisp
             UpcomingPerformances.Add(performance);
         }
 
-        public virtual string ToShortString()
+        public virtual string ToShortString() => this.ToString() + $", Id: {Id}, Education: {Education}, AveragePrice: {AveragePrice}";
+
+        public new object DeepCopy() => new Visitor
         {
-            return $"Id: {Id}, Person: {Person}, Education: {Education}, AveragePrice: {AveragePrice}";
+            Date = this.Date, Education = this.Education,
+            Id = this.Id + 1, Marks = this.Marks, UpcomingPerformances = this.UpcomingPerformances,
+            VisitedPerformances = this.VisitedPerformances, Age = this.Age, Gender = this.Gender,
+            Name = this.Name, AmountOfChildren = this.AmountOfChildren, HasSecondHalf = this.HasSecondHalf
+        };
+
+        public new DateTime Date { get; set; }
+
+        public IEnumerator GetNextUpcomingPerformance()
+        {
+            foreach (var upcomingPerformance in UpcomingPerformances)
+            {
+                yield return upcomingPerformance;
+            }
+        }
+        
+        public IEnumerator GetNextPerformance()
+        {
+            IList<Performance> performances = new List<Performance>(UpcomingPerformances);
+            
+            foreach (var performance in performances.Concat(VisitedPerformances))
+            {
+                yield return performance;
+            }
         }
 
+        public IEnumerator GetNextPerformancePricierThan(decimal price)
+        {
+            IList<Performance> performances = new List<Performance>(UpcomingPerformances);
+            
+            foreach (var performance in performances.Concat(VisitedPerformances))
+            {
+                if (performance.Price >= price)
+                {
+                    yield return performance;
+                }
+                    
+            }
+        }
+        
+        
     }
 }

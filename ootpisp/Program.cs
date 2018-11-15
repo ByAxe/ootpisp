@@ -9,7 +9,7 @@ namespace ootpisp
         public static void Main(string[] args)
         {
             // -----------------------------------------------------------------
-            // ----------------------------LAB 1--------------------------------
+            // ----------------------------LAB 1,2--------------------------------
             // -----------------------------------------------------------------
             Console.WriteLine($"\nLab1");
             
@@ -23,7 +23,8 @@ namespace ootpisp
             var education = new Education{Title = "Software Engineer"};
             var person = new Person{Age = 25, Gender = Gender.Male, Name = "Alex"};
             
-            var visitor = new Visitor{Id = 1, UpcomingPerformances = {greatestShow}, Education = education, Person = person};
+            var visitor = new Visitor{Age = 25, Gender = Gender.Male, Name = "Alex", 
+                Id = 1, UpcomingPerformances = {greatestShow}, Education = education};
             
             Console.WriteLine($"\t{visitor.ToShortString()}");
 
