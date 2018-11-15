@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using ootpisp.utils;
 
 namespace ootpisp
@@ -67,7 +68,47 @@ namespace ootpisp
             // -----------------------------------------------------------------
             // ----------------------------LAB 2--------------------------------
             // -----------------------------------------------------------------
+            Console.WriteLine($"\n\n\nLab2");
 
+            var visitorCopy = visitor.DeepCopy() as Visitor;
+            Debug.Assert(visitorCopy != null, nameof(visitorCopy) + " != null");
+            
+            visitorCopy.Id = visitor.Id;
+            var equal = visitor.Equals(visitorCopy) ? "Yes" : "No";
+            
+            Console.WriteLine($"\nVisitor: \n\t{visitor.ToShortString()}");
+            Console.WriteLine($"\nVisitor copy: \n\t{visitorCopy.ToShortString()}");
+            Console.WriteLine($"\nAre the equal? {equal}.");
+
+
+            Console.WriteLine($"\nNow we are going to change first Visitor. Watch.");
+            visitor.Id = 2;
+            visitor.Name = "James";
+            visitor.Age = 58;
+            visitor.VisitedPerformances = new List<Performance>();
+            
+            Console.WriteLine($"\nVisitor: \n\t{visitor.ToShortString()}");
+            Console.WriteLine($"\nVisitor copy: \n\t{visitorCopy.ToShortString()}");
+
+            try
+            {
+                const int thousandYears = 1000;
+                Console.WriteLine($"\nLet's try to set age for visitor to... {thousandYears}");
+                visitor.Age = thousandYears;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            const decimal borderPrice = 3;
+            Console.WriteLine($"\nLet's print all performances with price higher than {borderPrice}...");
+            foreach (var performance in visitorCopy.GetNextPerformancePricierThan(borderPrice))
+            {
+                Console.WriteLine($"\t{performance}");   
+            }
+
+            
         }
     }
 }

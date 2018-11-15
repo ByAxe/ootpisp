@@ -58,7 +58,7 @@ namespace ootpisp
 
         public new DateTime Date { get; set; }
 
-        public IEnumerator GetNextUpcomingPerformance()
+        public IEnumerable GetNextUpcomingPerformance()
         {
             foreach (var upcomingPerformance in UpcomingPerformances)
             {
@@ -66,7 +66,7 @@ namespace ootpisp
             }
         }
         
-        public IEnumerator GetNextPerformance()
+        public IEnumerable GetNextPerformance()
         {
             IList<Performance> performances = new List<Performance>(UpcomingPerformances);
             
@@ -76,7 +76,7 @@ namespace ootpisp
             }
         }
 
-        public IEnumerator GetNextPerformancePricierThan(decimal price)
+        public IEnumerable GetNextPerformancePricierThan(decimal price)
         {
             IList<Performance> performances = new List<Performance>(UpcomingPerformances);
             
