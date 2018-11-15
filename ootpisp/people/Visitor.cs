@@ -14,21 +14,23 @@ namespace ootpisp
         public List<Performance> UpcomingPerformances { set; get; } = new List<Performance>();
         public List<Performance> VisitedPerformances { set; get; } = new List<Performance>();
         public List<Mark> Marks { get; set; } = new List<Mark>();
+        public readonly double _averageMark;
+
+        public double AverageMark
+        {
+            get
+            {
+                if (Marks.Count == 0) return 0;
+                return Marks.Average(m => m.EvaluatedOn);
+            }
+        }
 
         public decimal AveragePrice
         {
             get
             {
-                var sum = decimal.Zero;
-                var amountOfElements = VisitedPerformances.Count;
-
-                if (amountOfElements == 0) return 0;
-
-                foreach (var performance in VisitedPerformances) sum += performance.Price;
-
-                var averagePrice = sum / amountOfElements;
-
-                return averagePrice;
+                if (VisitedPerformances.Count == 0) return 0;
+                return VisitedPerformances.Average(a => a.Price);
             }
         }
 
@@ -66,7 +68,7 @@ namespace ootpisp
 
         public virtual string ToShortString()
         {
-            return $"Id: {Id}, Name: {Name}, Date: {Date}, Education: ({Education}), AveragePrice: {AveragePrice}";
+            return $"Id: {Id}, Name: {Name}, Date: {Date}, Education: ({Education}), Average Mark: {AverageMark}";
         }
 
         public IEnumerable GetNextUpcomingPerformance()

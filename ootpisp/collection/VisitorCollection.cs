@@ -19,19 +19,34 @@ namespace ootpisp
             get { return Visitors.Where(v => v.Education.Type == EducationType.Specialist); }
         }
 
-        public string VisitorsSpecialistsToString()
-        {
-            var result = "";
-            foreach (var visitor in VisitorsSpecialists) result += visitor.ToShortString() + "\n";
-            return result;
-        }
+        public string VisitorsSpecialistsToString() => VisitorsSpecialists.Aggregate("", (current, visitor) => current + (visitor.ToShortString() + "\n"));
 
         public List<List<Visitor>> GroupsWithAverageMarkGroup(double value)
         {
-            return Visitors.Where(v => value.Equals(v.Marks.Average(m => m.EvaluatedOn)))
+            return Visitors.Where(v => (v.Marks.Average(m => m.EvaluatedOn) >= value))
                 .GroupBy(v => v.Marks.Average(m => m.EvaluatedOn))
                 .Select(grp => grp.ToList())
                 .ToList();
+        }
+
+        public string GroupsWithAverageMarkToString(List<List<Visitor>> groups)
+        {
+            if (groups == null) throw new ArgumentNullException(nameof(groups));
+            var result = "";
+            
+            for (var index = 0; index < groups.Count; index++)
+            {
+                var group = groups[index];
+                result += $"Group {index}\n";
+                
+                foreach (var visitor in group)
+                {
+                    result += "\t" + visitor.ToShortString() + "\n";
+                }
+            }
+
+
+            return result;
         }
 
 
@@ -67,9 +82,9 @@ namespace ootpisp
             Visitors = Visitors.OrderBy(v => v.Name).ToList();
         }
 
-        public void SortCollectionViaAveragePrice()
+        public void SortCollectionViaAverageMark()
         {
-            Visitors = Visitors.OrderBy(v => v.AveragePrice).ToList();
+            Visitors = Visitors.OrderBy(v => v.AverageMark).ToList();
         }
 
         public void SortCollectionViaDate()

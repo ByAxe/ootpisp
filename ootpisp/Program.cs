@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using ootpisp.utils;
 
 namespace ootpisp
@@ -133,16 +134,169 @@ namespace ootpisp
             visitorCollection.SortCollectionViaName();
             Console.WriteLine(visitorCollection.ToShortString());
             
-            Console.WriteLine("\nLet\'s sort collection via Average Price");
-            visitorCollection.SortCollectionViaAveragePrice();
+            Console.WriteLine("\nLet\'s sort collection via Average Mark");
+            visitorCollection.SortCollectionViaAverageMark();
             Console.WriteLine(visitorCollection.ToShortString());
 
             Console.WriteLine($"\nMaximum mark for all the elements of generated collection is...  {visitorCollection.MaxMarkGroup}");
 
             Console.WriteLine($"\nHere are all the specialists:\n{visitorCollection.VisitorsSpecialistsToString()}");
+
+            const double border = 20;
+            var groupsWithAverageMark = visitorCollection.GroupsWithAverageMarkGroup(border);
+            var groupsWithAverageMarkString = visitorCollection.GroupsWithAverageMarkToString(groupsWithAverageMark);
+            Console.WriteLine($"\nHere all the visitors with average mark higher than 20\n{groupsWithAverageMarkString}");
             
             
-            Console.WriteLine($"\nHere all the visitors with average mark higher than 20\n{visitorCollection.GroupsWithAverageMarkGroup(20)}");
+            var testCollection = new TestCollection{StartingAmountOfElements = 10000};
+            var stopWatch = new Stopwatch();
+            
+            
+            
+            Console.WriteLine($"\nLet's search first element");
+            stopWatch.Start();
+            try
+            {
+                var result = testCollection.Visitors.First(d => d.Value.Id.Equals(0));
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+
+            stopWatch.Stop();
+            Console.WriteLine("\tRunTime of searching first element in Dictionary<Person, Visitor> " 
+                              + stopWatch.Elapsed.TotalMilliseconds);
+            
+            
+            
+            
+            
+            stopWatch.Reset();
+            
+            stopWatch.Start();
+            try
+            {
+                var result1 = testCollection.People.First(d => d.Value.Age.Equals(0));
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+            stopWatch.Stop();
+            Console.WriteLine("\tRunTime of searching first element in Dictionary<string, Person> " 
+                              + stopWatch.Elapsed.TotalMilliseconds);
+            
+            
+            
+            
+            stopWatch.Reset();
+            
+            stopWatch.Start();
+            try
+            {
+                var result1 = testCollection.VisitorsList.First(d => d.Age.Equals(0));
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+            stopWatch.Stop();
+            Console.WriteLine("\tRunTime of searching first element in List<Visitor> " 
+                              + stopWatch.Elapsed.TotalMilliseconds);
+            
+            
+            
+            stopWatch.Reset();
+            
+            stopWatch.Start();
+            try
+            {
+                var result1 = testCollection.Strings.First(s => s.Equals("s"));
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+            stopWatch.Stop();
+            Console.WriteLine("\tRunTime of searching first element in List<string> " 
+                              + stopWatch.Elapsed.TotalMilliseconds);
+            
+            
+            
+            stopWatch.Reset();
+            
+            Console.WriteLine($"\nLet's search last element");
+            stopWatch.Start();
+            try
+            {
+                var result = testCollection.Visitors.Last(d => d.Value.Id.Equals(0));
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+
+            stopWatch.Stop();
+            Console.WriteLine("\tRunTime of searching last element in Dictionary<Person, Visitor> " 
+                              + stopWatch.Elapsed.TotalMilliseconds);
+            
+            
+            
+            
+            
+            stopWatch.Reset();
+            
+            stopWatch.Start();
+            try
+            {
+                var result1 = testCollection.People.Last(d => d.Value.Age.Equals(0));
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+            stopWatch.Stop();
+            Console.WriteLine("\tRunTime of searching last element in Dictionary<string, Person> " 
+                              + stopWatch.Elapsed.TotalMilliseconds);
+            
+            
+            
+            
+            stopWatch.Reset();
+            
+            stopWatch.Start();
+            try
+            {
+                var result1 = testCollection.VisitorsList.Last(d => d.Age.Equals(0));
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+            stopWatch.Stop();
+            Console.WriteLine("\tRunTime of searching last element in List<Visitor> " 
+                              + stopWatch.Elapsed.TotalMilliseconds);
+            
+            
+            
+            stopWatch.Reset();
+            
+            stopWatch.Start();
+            try
+            {
+                var result1 = testCollection.Strings.Last(s => s.Equals("s"));
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+            stopWatch.Stop();
+            Console.WriteLine("\tRunTime of searching last element in List<string> " 
+                              + stopWatch.Elapsed.TotalMilliseconds);
+            
+            
+
         }
     }
 }
